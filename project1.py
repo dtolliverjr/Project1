@@ -9,6 +9,8 @@ class Logic(QMainWindow, Ui_MainWindow):
     """ A class to request voting information through a GUI and output the information into a CSV file."""
 
     def __init__(self) -> None:
+        """enables the submit button, defines an empty dictionary,
+        and calls the read data function"""
         super().__init__()
         self.setupUi(self)
 
@@ -21,6 +23,8 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.button_unchecked.hide()
 
     def read_data(self) -> csv:
+        """checks for an existing file path and creates one if necessary.
+        stores data pulled from the existing file into a dictionary"""
         file_exists: bool = os.path.exists('vote_list.csv')
         if not file_exists:
             file = open('vote_list.csv', 'x')
@@ -34,6 +38,10 @@ class Logic(QMainWindow, Ui_MainWindow):
                     self.data_dictionary[voter_id] = voter_candidate  # {'123': John, '345': Jane}
 
     def submit(self) -> csv:
+        """validates the user id as only numbers.
+        checks for a selected candidate. searches the previously made
+        dictionary for duplicate voter id's. then updates a csv file with
+        only non-duplicated voter id's and their associated candidate selection."""
         vote_id: str = self.input_id.text()
         if vote_id.isnumeric():
             pass
