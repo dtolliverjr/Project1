@@ -25,24 +25,27 @@ class Logic(QMainWindow, Ui_MainWindow):
     def read_data(self) -> csv:
         """checks for an existing file path and creates one if necessary.
         stores data pulled from the existing file into a dictionary"""
-        file_exists: bool = os.path.exists('vote_list.csv')
+        file_exists = os.path.exists('vote_list.csv')
         if not file_exists:
             file = open('vote_list.csv', 'x')
             file.close()
         else:
+            print(self.data_dictionary)
             with open('vote_list.csv', 'r') as csv_file:
                 content = csv.reader(csv_file, delimiter=',')
                 for line in content:
-                    voter_id: str = line[0]
-                    voter_candidate: str = line[1]
+                    voter_id = line[0]
+                    voter_candidate = line[1]
                     self.data_dictionary[voter_id] = voter_candidate  # {'123': John, '345': Jane}
+                    print(self.data_dictionary)
 
     def submit(self) -> csv:
         """validates the user id as only numbers.
         checks for a selected candidate. searches the previously made
         dictionary for duplicate voter id's. then updates a csv file with
         only non-duplicated voter id's and their associated candidate selection."""
-        vote_id: str = self.input_id.text()
+        self.read_data()
+        vote_id = self.input_id.text()
         if vote_id.isnumeric():
             pass
         else:
@@ -60,6 +63,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             return
 
         # Checking if user already voted
+        print(self.data_dictionary)
         if vote_id in self.data_dictionary.keys():
             self.label_Error.setText('Already Voted')
             return
